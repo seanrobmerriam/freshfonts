@@ -1,6 +1,6 @@
-# FreshFont
+# FreshFonts
 
-**FreshFont** is a self-hosted font and SVG icon server built with [Deno Fresh 2](https://fresh.deno.dev/).
+**FreshFonts** is a self-hosted font and SVG icon server built with [Deno Fresh 2](https://fresh.deno.dev/).
 
 Drop WOFF2 fonts into `./assets/fonts/` and SVG icons into `./assets/icons/`. FreshFont discovers them automatically and exposes them through predictable URLs, per-family stylesheets, and a Google Fonts-style CSS endpoint.
 
@@ -124,7 +124,7 @@ becomes:
 JetBrains Mono
 ```
 
-FreshFont converts directory slugs to display names by splitting on `-` and capitalizing each segment.
+FreshFonts converts directory slugs to display names by splitting on `-` and capitalizing each segment.
 
 ---
 
@@ -348,7 +348,7 @@ The collection browser lets you:
 
 ## Converting Fonts to WOFF2
 
-FreshFont serves WOFF2 files rather than TTF or OTF files.
+FreshFonts serves WOFF2 files rather than TTF or OTF files.
 
 One option for converting fonts is [FontTools](https://fonttools.readthedocs.io/) with Brotli support:
 
@@ -391,7 +391,7 @@ For production use, prefer official WOFF2 releases from the font project when av
 
 ## Architecture
 
-FreshFont is intentionally filesystem-driven.
+FreshFonts is intentionally filesystem-driven.
 
 ```text
 assets/
