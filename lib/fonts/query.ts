@@ -41,9 +41,7 @@ export function selectFontVariants(
 
   const requested = new Set(weights);
 
-  return font.variants.filter((variant) =>
-    requested.has(variant.weight)
-  );
+  return font.variants.filter((variant) => requested.has(variant.weight));
 }
 
 export function familyNameToSlug(

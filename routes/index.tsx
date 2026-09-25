@@ -1,51 +1,86 @@
 import { Head } from "fresh/runtime";
 import { define } from "../utils.ts";
 
-import { BrowserMockup } from "../components/BrowserMockup.tsx";
+import BrowserMockup from "../islands/BrowserMockup.tsx";
+
 import { FontList } from "../components/FontList.tsx";
 import { IconList } from "../components/IconList.tsx";
 
 import { getFonts } from "../lib/fonts/registry.ts";
 import { getIconSets } from "../lib/icons/registry.ts";
 
-export default define.page(async function Home() {
+export default define.page(async function Home(ctx) {
   const [fonts, iconSets] = await Promise.all([
     getFonts(),
     getIconSets(),
   ]);
 
+  const defaultFont = fonts[0]
+    ? {
+      slug: fonts[0].slug,
+      family: fonts[0].family,
+      weights: [
+        ...new Set(
+          fonts[0].variants.map(
+            (variant) => variant.weight,
+          ),
+        ),
+      ].sort((a, b) => a - b),
+    }
+    : undefined;
+
   return (
-    <div class="px-4 py-8 mx-auto fresh-gradient min-h-screen">
+    <>
       <Head>
         <title>FreshFont Icon & Font Server</title>
 
+  <link
+    rel="stylesheet"
+    href="/fonts/newsreader.css"
+  />
+  <link
+    rel="stylesheet"
+    href="/fonts/red-hat-mono.css"
+  />
         <meta
           name="description"
-          content="Self-hosted font and SVG icon server built with Deno Fresh."
+          content="Self-hosted WOFF2 fonts and SVG icons with Google Fonts-style embeds."
         />
       </Head>
 
-      <div class="max-w-screen-xl mx-auto">
-        <BrowserMockup />
+      <header class="mt-10 text-center">
+        <h1 class="hero-title">
+          Freshfonts
+        </h1>
 
-        <div class="flex flex-col items-center justify-center mt-8">
-          <h1 class="text-4xl font-bold text-center">
-            FreshFont Icon & Font Server
-          </h1>
+        <p class="mt-3 text-lg opacity-70">
+          Self-hosted fonts and SVG icons with zero-config filesystem discovery.
+        </p>
 
-          <p class="my-4 text-center opacity-80">
-            Add font files and SVG icon files to
-            <code class="mx-2">./assets/fonts</code>
-            and
-            <code class="mx-2">./assets/icons</code>.
-          </p>
+        <p class="mt-4 mb-10 text-sm opacity-50">
+          Drop assets into <code>./assets/fonts</code> or{" "}
+          <code>./assets/icons</code>.
+        </p>
+      </header>
+
+      <main class="px-4 py-8 min-h-screen">
+        <div class="max-w-screen-xl mx-auto">
+          <BrowserMockup
+            defaultFont={defaultFont}
+          />
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12 items-start">
+            <FontList
+              fonts={fonts}
+              origin={ctx.url.origin}
+            />
+
+            <IconList
+              iconSets={iconSets}
+            />
+          </div>
         </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8 items-start">
-          <FontList fonts={fonts} />
-          <IconList iconSets={iconSets} />
-        </div>
-      </div>
-    </div>
+      </main>
+    </>
   );
 });

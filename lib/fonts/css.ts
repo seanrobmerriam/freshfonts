@@ -1,7 +1,4 @@
-import type {
-  FontFamily,
-  FontVariant,
-} from "./types.ts";
+import type { FontFamily, FontVariant } from "./types.ts";
 
 export function generateFontCss(
   font: FontFamily,

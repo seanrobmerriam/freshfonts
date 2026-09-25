@@ -22,8 +22,7 @@ export default define.page(async function FontPreview(ctx) {
         </h1>
 
         <p class="mt-4">
-          No font family exists with the slug{" "}
-          <code>{slug}</code>.
+          No font family exists with the slug <code>{slug}</code>.
         </p>
 
         <a
@@ -36,14 +35,11 @@ export default define.page(async function FontPreview(ctx) {
     );
   }
 
-  const stylesheetUrl =
-    `${ctx.url.origin}/fonts/${font.slug}.css`;
+  const stylesheetUrl = `${ctx.url.origin}/fonts/${font.slug}.css`;
 
-  const embedCode =
-    `<link rel="stylesheet" href="${stylesheetUrl}">`;
+  const embedCode = `<link rel="stylesheet" href="${stylesheetUrl}">`;
 
-  const cssUsage =
-    `font-family: "${font.family}", sans-serif;`;
+  const cssUsage = `font-family: "${font.family}", sans-serif;`;
 
   const weights = [
     ...new Set(
@@ -146,20 +142,14 @@ export default define.page(async function FontPreview(ctx) {
 
                   <p
                     class="text-4xl leading-tight"
-                    style={{
-                      fontFamily: `"${font.family}", sans-serif`,
-                      fontWeight: weight,
-                    }}
+                    style={`font-family: "${font.family}", sans-serif; font-weight: ${weight}; font-style: normal;`}
                   >
                     The quick brown fox jumps over the lazy dog.
                   </p>
 
                   <p
                     class="text-xl mt-3 opacity-80"
-                    style={{
-                      fontFamily: `"${font.family}", sans-serif`,
-                      fontWeight: weight,
-                    }}
+                    style={`font-family: "${font.family}", sans-serif; font-weight: ${weight}; font-style: normal;`}
                   >
                     ABCDEFGHIJKLMNOPQRSTUVWXYZ
                     <br />

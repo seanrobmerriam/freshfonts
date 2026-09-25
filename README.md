@@ -1,8 +1,8 @@
-# FreshFonts
+# FreshFont
 
-**FreshFonts** is a self-hosted font and SVG icon server built with [Deno Fresh 2](https://fresh.deno.dev/).
+**FreshFont** is a self-hosted font and SVG icon server built with [Deno Fresh 2](https://fresh.deno.dev/).
 
-Drop WOFF2 fonts into `./assets/fonts/` and SVG icons into `./assets/icons/`. FreshFonts discovers them automatically and exposes them through predictable URLs, per-family stylesheets, and a Google Fonts-style CSS endpoint.
+Drop WOFF2 fonts into `./assets/fonts/` and SVG icons into `./assets/icons/`. FreshFont discovers them automatically and exposes them through predictable URLs, per-family stylesheets, and a Google Fonts-style CSS endpoint.
 
 No database. No manifest. No asset configuration.
 
@@ -423,4 +423,197 @@ routes/
 │   └── [family]/
 │       └── [file].ts
 └── icons/
-    ├── [
+    ├── [collection].tsx
+    └── [collection]/
+        └── [file].ts
+
+components/
+├── FontList.tsx
+└── IconList.tsx
+
+islands/
+├── BrowserMockup.tsx
+├── CopyButton.tsx
+├── FontPreviewButton.tsx
+└── fontPreviewState.ts
+
+tests/
+```
+
+### Font Request Flow
+
+```text
+assets/fonts
+    ↓
+font registry
+    ↓
+query / family selection
+    ↓
+CSS generator
+    ↓
+Fresh route
+```
+
+### Icon Request Flow
+
+```text
+assets/icons
+    ↓
+icon registry
+    ↓
+Fresh route
+```
+
+The filesystem remains the source of truth.
+
+---
+
+## Stack
+
+- [Deno 2](https://deno.com/)
+- [Fresh 2](https://fresh.deno.dev/)
+- Preact
+- Preact Signals
+- Vite
+- Tailwind CSS v4
+- daisyUI v5
+
+Fresh provides routing and server rendering while Vite handles development and production builds.
+
+---
+
+## Development
+
+### Run the Development Server
+
+```bash
+deno task dev
+```
+
+### Run the Test Suite
+
+```bash
+deno test --allow-read --allow-write
+```
+
+The write permission is required because registry tests create temporary filesystem fixtures.
+
+### Check the Project
+
+```bash
+deno task check
+```
+
+### Build for Production
+
+```bash
+deno task build
+```
+
+### Run the Production Build
+
+```bash
+deno task start
+```
+
+---
+
+## Commands
+
+| Command | Description |
+| --- | --- |
+| `deno task dev` | Start the Vite development server with HMR |
+| `deno task build` | Create the production Fresh build |
+| `deno task start` | Run the production server |
+| `deno task check` | Format check, lint, and type-check |
+| `deno task update` | Update Fresh framework files |
+| `deno test --allow-read --allow-write` | Run the test suite |
+
+---
+
+## Caching
+
+Generated CSS responses use a shorter cache lifetime:
+
+```text
+Cache-Control: public, max-age=3600
+```
+
+Font and SVG asset responses can use longer cache lifetimes in production.
+
+During development, using `no-store` is recommended when replacing assets at the same URL.
+
+If immutable caching is enabled:
+
+```text
+Cache-Control: public, max-age=31536000, immutable
+```
+
+the corresponding asset URLs should also be treated as immutable.
+
+For stronger production guarantees, fingerprinted asset URLs are recommended.
+
+---
+
+## Security
+
+Asset routes do not pass arbitrary URL values directly to the filesystem.
+
+Font families and icon collections are restricted to safe path segments, and font filenames must match the expected weight/style convention.
+
+Examples of accepted font filenames:
+
+```text
+400.woff2
+700.woff2
+700-italic.woff2
+```
+
+Invalid paths and unsupported filenames return `404`.
+
+This prevents request paths from being used for filesystem traversal.
+
+---
+
+## Testing
+
+The test suite covers the core domain logic independently of Fresh routing:
+
+```text
+tests/
+├── css_generator_test.ts
+├── embed_test.ts
+├── font_parser_test.ts
+├── font_query_test.ts
+├── font_registry_test.ts
+└── icon_registry_test.ts
+```
+
+Coverage includes:
+
+- font filename parsing
+- weight and style detection
+- filesystem font discovery
+- filesystem icon discovery
+- CSS generation
+- family query parsing
+- requested weight filtering
+- embed URL generation
+
+Run all tests with:
+
+```bash
+deno test --allow-read --allow-write
+```
+
+---
+
+## License
+
+FreshFont's source code is distributed under the repository's project license.
+
+Fonts and icon sets remain subject to their respective upstream licenses.
+
+The bundled Inter assets are subject to the [Inter typeface license](https://github.com/rsms/inter/blob/master/LICENSE.txt).
+
+When adding additional fonts or icon collections, verify that their licenses permit self-hosting and redistribution.
