@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@theme {
+  /* This updates daisyUI's base app background color everywhere natively */
+  --color-base-100: rgb(1, 1, 15);
+}
