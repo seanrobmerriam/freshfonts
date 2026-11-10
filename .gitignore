@@ -1,17 +1,18 @@
-# dotenv environment variable files
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
 .env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+__unconfig*
+todos.json
 
-# Fresh build directory
-_fresh/
-# npm + other dependencies
-node_modules/
-vendor/
-
-# Local font and icon assets; keep empty directories in fresh clones
+# Local font and icon assets
 /assets/fonts/*
 !/assets/fonts/.gitkeep
 /assets/icons/*
