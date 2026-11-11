@@ -105,7 +105,7 @@ function Page() {
 									</div>
 
 									<a
-										href={`/icons/${iconSet.slug}/${icon.file}`}
+										href={`/icon-preview/${iconSet.slug}/${icon.file}`}
 										target="_blank"
 										rel="noopener noreferrer"
 										className="btn btn-xs btn-ghost mt-1"

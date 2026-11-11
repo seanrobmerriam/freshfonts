@@ -28,6 +28,12 @@ export const Route = createFileRoute("/icons/$collection_/$file/$")({
 							"Content-Type": "image/svg+xml; charset=utf-8",
 							"Cache-Control": "public, max-age=31536000, immutable",
 							"Access-Control-Allow-Origin": "*",
+							...(file.startsWith("imported/")
+								? {
+										"Content-Security-Policy":
+											"sandbox; default-src 'none'; style-src 'unsafe-inline'; img-src data:",
+									}
+								: {}),
 						},
 					});
 				} catch (error) {

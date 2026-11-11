@@ -16,6 +16,7 @@ const config = defineConfig({
 			handlers: [
 				{ route: "/fonts/**", handler: "./server/tanstack-assets.ts" },
 				{ route: "/icons/**", handler: "./server/tanstack-assets.ts" },
+				{ route: "/icon-preview/**", handler: "./server/tanstack-assets.ts" },
 			],
 		}),
 		tailwindcss(),

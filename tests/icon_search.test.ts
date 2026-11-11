@@ -33,6 +33,12 @@ test("rejects malformed registry data and unsafe import inputs before downloadin
   await assert.rejects(() => malformed.search("git"));
 });
 
+test("accepts registry icons with full license notices", async () => {
+  const license = "A complete license notice. ".repeat(20);
+  const service = createIconSearchService({ loadRegistry: async () => ({ icons: [{ ...registry.icons[0], license }] }) });
+  assert.equal((await service.search("github")).icons[0].license, license);
+});
+
 test("imports the selected variant, preserves existing files and cleans up failed downloads", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "freshfonts-import-"));
   const temporary: string[] = [];
@@ -63,6 +69,11 @@ test("imports the selected variant, preserves existing files and cleans up faile
       runCli: async () => { throw new Error("Download failed"); },
     });
     await assert.rejects(() => failed.add({ slug: "github", variant: "default" }), /Download failed/);
+		const fallback = createIconSearchService({ root, loadRegistry: async () => registry,
+			runCli: async (_slug, _variant, dir) => { await writeFile(path.join(dir, "github.svg"), svg); },
+		});
+		await assert.rejects(() => fallback.add({ slug: "github", variant: "dark" }));
+		await assert.rejects(() => readFile(path.join(root, "imported/github/dark.svg")));
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 

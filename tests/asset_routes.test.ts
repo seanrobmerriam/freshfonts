@@ -13,6 +13,8 @@ test("serves fonts and nested icons for browser asset requests", async () => {
 	await mkdir(path.join(iconDirectory, "brands/color"), { recursive: true });
 	await writeFile(path.join(iconDirectory, "brands/color/example.svg"), svg);
 	await writeFile(path.join(iconDirectory, "flat.svg"), svg);
+	await mkdir(path.join(iconDirectory, "imported/example"), { recursive: true });
+	await writeFile(path.join(iconDirectory, "imported/example/default.svg"), svg);
 	const fontBytes = Buffer.from("wOF2-preview-route-fixture");
 	await mkdir(directory, { recursive: true });
 	await writeFile(path.join(directory, "400.woff2"), fontBytes);
@@ -36,8 +38,22 @@ test("serves fonts and nested icons for browser asset requests", async () => {
 		});
 		const collectionPage = await fetch(`${origin}/icons/${collection}`);
 		assert.equal(collectionPage.status, 200);
-		assert.ok((await collectionPage.text()).includes("brands/color/example.svg"));
-		for (const file of ["brands/color/example.svg", "flat.svg"]) {
+		const collectionHtml = await collectionPage.text();
+		assert.ok(collectionHtml.includes(`/icon-preview/${collection}/brands/color/example.svg`));
+		const previewPage = await fetch(`${origin}/icon-preview/${collection}/brands/color/example.svg`);
+		assert.equal(previewPage.status, 200);
+		const previewHtml = await previewPage.text();
+		assert.ok(previewHtml.includes(`src="/icons/${collection}/brands/color/example.svg"`));
+		assert.ok(previewHtml.includes('aria-label="Icon preview"'));
+		assert.ok(previewHtml.includes('width="256"'));
+		assert.ok(previewHtml.includes('background-image:linear-gradient'));
+		assert.ok(previewHtml.includes("Download SVG"));
+		const searchPage = await fetch(`${origin}/icon-search`);
+		assert.equal(searchPage.status, 200);
+		assert.ok((await searchPage.text()).includes("Search for icons"));
+		const home = await fetch(origin);
+		assert.ok((await home.text()).includes('href="/icon-search"'));
+		for (const file of ["brands/color/example.svg", "flat.svg", "imported/example/default.svg"]) {
 			const icon = await fetch(`${origin}/icons/${collection}/${file}`, {
 				headers: { accept: "image/avif,image/webp,*/*", "sec-fetch-dest": "image" },
 			});
@@ -45,6 +61,9 @@ test("serves fonts and nested icons for browser asset requests", async () => {
 			assert.match(icon.headers.get("content-type") ?? "", /^image\/svg\+xml/);
 			assert.equal(icon.headers.get("access-control-allow-origin"), "*");
 			assert.equal(icon.headers.get("cache-control"), "public, max-age=31536000, immutable");
+			if (file.startsWith("imported/")) {
+				assert.equal(icon.headers.get("content-security-policy"), "sandbox; default-src 'none'; style-src 'unsafe-inline'; img-src data:");
+			}
 			assert.equal(await icon.text(), svg);
 		}
 		for (const file of ["brands/color/missing.svg", "brands%2F..%2Fflat.svg", "brands%5Cflat.svg", "brands/color/example.txt"]) {

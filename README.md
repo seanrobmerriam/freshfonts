@@ -16,6 +16,13 @@ Open http://localhost:3000. The home page lists fonts and icon collections,
 with interactive font previews and copyable embed snippets. Detail pages show
 font weights or an icon collection's SVGs.
 
+Use **Search for more icons** above the icon collections to open `/icon-search`.
+Search theSVG by brand, name, or category, choose an available variant, and click
+**Add**. The server uses the installed `@thesvg/cli` to download the SVG into
+`assets/icons/thesvg/imported/<slug>/<variant>.svg`; the catalog refreshes without
+a rebuild. Existing files are preserved. Search, previews, and new downloads
+require internet access; icons already added are served locally.
+
 ```sh
 bun run test       # Ported unit tests using Node's test runner
 bun run typecheck  # TypeScript
@@ -29,8 +36,8 @@ Set `PORT` to change the production port, for example `PORT=3100 bun run start`.
 ## Assets
 
 Place fonts in `assets/fonts/<family-slug>/<weight>[-italic].woff2` and SVG icons
-in `assets/icons/<collection-slug>/*.svg`. Font weights must be 100–900 in
-increments of 100; italic filenames use `-italic`. Unsupported font files are
+in `assets/icons/<collection-slug>/**/*.svg` (nested folders are supported). Font
+weights must be 100–900 in increments of 100; italic filenames use `-italic`. Unsupported font files are
 ignored. Registries scan the filesystem per request without caching, so new
 assets are discovered without a rebuild.
 
@@ -40,11 +47,16 @@ include `assets/fonts` and `assets/icons` alongside `.output` and start the serv
 from the project directory. The `.output` build alone does not contain these
 runtime assets.
 
+Icon imports also require the installed production dependencies (`bun install
+--production`, including `@thesvg/cli`) and write access to `assets/icons/thesvg`.
+Adding icons changes the shared server catalog for all visitors.
+
 ## Routes
 
 | URL | Behavior |
 | --- | --- |
 | `/` | Font and icon catalog |
+| `/icon-search` | Search, preview, and add theSVG icons |
 | `/fonts/<family>` | Font details and previews |
 | `/icons/<collection>` | SVG collection browser |
 | `/fonts/<family>.css` | All variants as `@font-face` rules |

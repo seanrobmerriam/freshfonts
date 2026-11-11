@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import type { IconSet } from "../lib/icons/types.ts";
 
 interface IconListProps {
@@ -14,6 +15,9 @@ export function IconList({ iconSets }: IconListProps) {
 					{iconSets.length}{" "}
 					{iconSets.length === 1 ? "collection" : "collections"}
 				</p>
+				<Link to="/icon-search" className="btn btn-sm btn-outline mt-3">
+					Search for more icons
+				</Link>
 			</header>
 
 			{iconSets.length === 0 ? (

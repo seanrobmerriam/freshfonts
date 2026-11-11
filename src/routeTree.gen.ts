@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CssRouteImport } from './routes/css'
+import { Route as IconSearchRouteImport } from './routes/icon-search'
 import { Route as ApiSplatRouteImport } from './routes/api.$'
 import { Route as ApiNameRouteImport } from './routes/api.$name'
 import { Route as FontsFamilyRouteImport } from './routes/fonts.$family'
@@ -18,6 +19,7 @@ import { Route as FontsChar123familyChar125DotcssRouteImport } from './routes/fo
 import { Route as IconsCollectionRouteImport } from './routes/icons.$collection'
 import { Route as ApiRpcSplatRouteImport } from './routes/api.rpc.$'
 import { Route as FontsFamilyFileRouteImport } from './routes/fonts.$family_.$file'
+import { Route as IconPreviewCollectionSplatRouteImport } from './routes/icon-preview.$collection.$'
 import { Route as IconsCollectionFileSplatRouteImport } from './routes/icons.$collection_.$file.$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -28,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
 const CssRoute = CssRouteImport.update({
   id: '/css',
   path: '/css',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IconSearchRoute = IconSearchRouteImport.update({
+  id: '/icon-search',
+  path: '/icon-search',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiSplatRoute = ApiSplatRouteImport.update({
@@ -66,6 +73,12 @@ const FontsFamilyFileRoute = FontsFamilyFileRouteImport.update({
   path: '/fonts/$family/$file',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IconPreviewCollectionSplatRoute =
+  IconPreviewCollectionSplatRouteImport.update({
+    id: '/icon-preview/$collection/$',
+    path: '/icon-preview/$collection/$',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const IconsCollectionFileSplatRoute =
   IconsCollectionFileSplatRouteImport.update({
     id: '/icons/$collection_/$file/$',
@@ -76,6 +89,7 @@ const IconsCollectionFileSplatRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/css': typeof CssRoute
+  '/icon-search': typeof IconSearchRoute
   '/api/$': typeof ApiSplatRoute
   '/api/$name': typeof ApiNameRoute
   '/fonts/$family': typeof FontsFamilyRoute
@@ -83,11 +97,13 @@ export interface FileRoutesByFullPath {
   '/icons/$collection': typeof IconsCollectionRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/fonts/$family/$file': typeof FontsFamilyFileRoute
+  '/icon-preview/$collection/$': typeof IconPreviewCollectionSplatRoute
   '/icons/$collection/$file/$': typeof IconsCollectionFileSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/css': typeof CssRoute
+  '/icon-search': typeof IconSearchRoute
   '/api/$': typeof ApiSplatRoute
   '/api/$name': typeof ApiNameRoute
   '/fonts/$family': typeof FontsFamilyRoute
@@ -95,12 +111,14 @@ export interface FileRoutesByTo {
   '/icons/$collection': typeof IconsCollectionRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/fonts/$family/$file': typeof FontsFamilyFileRoute
+  '/icon-preview/$collection/$': typeof IconPreviewCollectionSplatRoute
   '/icons/$collection/$file/$': typeof IconsCollectionFileSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/css': typeof CssRoute
+  '/icon-search': typeof IconSearchRoute
   '/api/$': typeof ApiSplatRoute
   '/api/$name': typeof ApiNameRoute
   '/fonts/$family': typeof FontsFamilyRoute
@@ -108,6 +126,7 @@ export interface FileRoutesById {
   '/icons/$collection': typeof IconsCollectionRoute
   '/api/rpc/$': typeof ApiRpcSplatRoute
   '/fonts/$family_/$file': typeof FontsFamilyFileRoute
+  '/icon-preview/$collection/$': typeof IconPreviewCollectionSplatRoute
   '/icons/$collection_/$file/$': typeof IconsCollectionFileSplatRoute
 }
 export interface FileRouteTypes {
@@ -115,6 +134,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/css'
+    | '/icon-search'
     | '/api/$'
     | '/api/$name'
     | '/fonts/$family'
@@ -122,11 +142,13 @@ export interface FileRouteTypes {
     | '/icons/$collection'
     | '/api/rpc/$'
     | '/fonts/$family/$file'
+    | '/icon-preview/$collection/$'
     | '/icons/$collection/$file/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/css'
+    | '/icon-search'
     | '/api/$'
     | '/api/$name'
     | '/fonts/$family'
@@ -134,11 +156,13 @@ export interface FileRouteTypes {
     | '/icons/$collection'
     | '/api/rpc/$'
     | '/fonts/$family/$file'
+    | '/icon-preview/$collection/$'
     | '/icons/$collection/$file/$'
   id:
     | '__root__'
     | '/'
     | '/css'
+    | '/icon-search'
     | '/api/$'
     | '/api/$name'
     | '/fonts/$family'
@@ -146,12 +170,14 @@ export interface FileRouteTypes {
     | '/icons/$collection'
     | '/api/rpc/$'
     | '/fonts/$family_/$file'
+    | '/icon-preview/$collection/$'
     | '/icons/$collection_/$file/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CssRoute: typeof CssRoute
+  IconSearchRoute: typeof IconSearchRoute
   ApiSplatRoute: typeof ApiSplatRoute
   ApiNameRoute: typeof ApiNameRoute
   FontsFamilyRoute: typeof FontsFamilyRoute
@@ -159,6 +185,7 @@ export interface RootRouteChildren {
   IconsCollectionRoute: typeof IconsCollectionRoute
   ApiRpcSplatRoute: typeof ApiRpcSplatRoute
   FontsFamilyFileRoute: typeof FontsFamilyFileRoute
+  IconPreviewCollectionSplatRoute: typeof IconPreviewCollectionSplatRoute
   IconsCollectionFileSplatRoute: typeof IconsCollectionFileSplatRoute
 }
 
@@ -176,6 +203,13 @@ declare module '@tanstack/react-router' {
       path: '/css'
       fullPath: '/css'
       preLoaderRoute: typeof CssRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/icon-search': {
+      id: '/icon-search'
+      path: '/icon-search'
+      fullPath: '/icon-search'
+      preLoaderRoute: typeof IconSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/$': {
@@ -227,6 +261,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FontsFamilyFileRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/icon-preview/$collection/$': {
+      id: '/icon-preview/$collection/$'
+      path: '/icon-preview/$collection/$'
+      fullPath: '/icon-preview/$collection/$'
+      preLoaderRoute: typeof IconPreviewCollectionSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/icons/$collection_/$file/$': {
       id: '/icons/$collection_/$file/$'
       path: '/icons/$collection/$file/$'
@@ -240,6 +281,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CssRoute: CssRoute,
+  IconSearchRoute: IconSearchRoute,
   ApiSplatRoute: ApiSplatRoute,
   ApiNameRoute: ApiNameRoute,
   FontsFamilyRoute: FontsFamilyRoute,
@@ -247,6 +289,7 @@ const rootRouteChildren: RootRouteChildren = {
   IconsCollectionRoute: IconsCollectionRoute,
   ApiRpcSplatRoute: ApiRpcSplatRoute,
   FontsFamilyFileRoute: FontsFamilyFileRoute,
+  IconPreviewCollectionSplatRoute: IconPreviewCollectionSplatRoute,
   IconsCollectionFileSplatRoute: IconsCollectionFileSplatRoute,
 }
 export const routeTree = rootRouteImport
