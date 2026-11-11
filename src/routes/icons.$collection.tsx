@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { IconImage } from "../components/ui/IconImage";
 import CopyButton from "../islands/CopyButton.tsx";
 import { loadIcons } from "../lib/catalog.functions";
 import { buildIconHtml, buildIconUrl } from "../lib/embed.ts";
@@ -18,7 +19,7 @@ function Page() {
 	if (!iconSet) {
 		return (
 			<main className="max-w-screen-xl mx-auto px-4 py-12">
-				<a href="/" className="link link-hover text-sm opacity-70">
+				<a href="/" className="ui-link ui-link-hover text-sm opacity-70">
 					← Back
 				</a>
 
@@ -34,7 +35,7 @@ function Page() {
 	return (
 		<main className="max-w-screen-xl mx-auto px-4 py-12">
 			<header>
-				<a href="/" className="link link-hover text-sm opacity-70">
+				<a href="/" className="ui-link ui-link-hover text-sm opacity-70">
 					← Back to FreshFont
 				</a>
 
@@ -47,7 +48,7 @@ function Page() {
 						</p>
 					</div>
 
-					<code className="text-sm bg-base-200 px-3 py-2 rounded-box">
+					<code className="text-sm bg-subtle px-3 py-2 rounded-xl">
 						/icons/{iconSet.slug}/&lt;icon&gt;.svg
 					</code>
 				</div>
@@ -62,16 +63,16 @@ function Page() {
 
 						return (
 							<article
-								className="card bg-base-100 border border-base-300 hover:border-base-content/30 transition-colors"
+								className="ui-card bg-surface border border-line hover:border-strong transition-colors"
 								key={icon.name}
 							>
-								<div className="card-body p-4">
-									<div className="h-24 flex items-center justify-center rounded-box bg-base-200">
-										<img
+								<div className="ui-card-body p-4">
+									<div className="h-24 flex items-center justify-center rounded-xl bg-subtle">
+										<IconImage
 											src={`/icons/${iconSet.slug}/${icon.file}`}
-											alt=""
+											alt={icon.name}
 											className="size-10"
-											loading="lazy"
+											imageClassName="size-10"
 										/>
 									</div>
 
@@ -93,14 +94,14 @@ function Page() {
 											value={url}
 											label="URL"
 											copiedLabel="Copied"
-											className="btn btn-sm"
+											className="ui-button ui-button-sm"
 										/>
 
 										<CopyButton
 											value={html}
 											label="HTML"
 											copiedLabel="Copied"
-											className="btn btn-sm btn-ghost"
+											className="ui-button ui-button-sm ui-button-ghost"
 										/>
 									</div>
 
@@ -108,7 +109,7 @@ function Page() {
 										href={`/icon-preview/${iconSet.slug}/${icon.file}`}
 										target="_blank"
 										rel="noopener noreferrer"
-										className="btn btn-xs btn-ghost mt-1"
+										className="ui-button ui-button-xs ui-button-ghost mt-1"
 									>
 										Open SVG
 									</a>

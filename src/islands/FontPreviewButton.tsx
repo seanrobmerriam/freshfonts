@@ -1,3 +1,4 @@
+import { Button } from "../components/ui/Button";
 import { useFontPreview } from "./fontPreviewState";
 
 interface FontPreviewButtonProps {
@@ -11,7 +12,7 @@ export default function FontPreviewButton({
 	slug,
 	family,
 	weights,
-	className = "btn btn-sm btn-ghost",
+	className = "ui-button ui-button-sm ui-button-ghost",
 }: FontPreviewButtonProps) {
 	const { selectFont } = useFontPreview();
 	function handleClick() {
@@ -23,8 +24,8 @@ export default function FontPreviewButton({
 	}
 
 	return (
-		<button type="button" className={className} onClick={handleClick}>
+		<Button type="button" className={className} onClick={handleClick}>
 			Preview
-		</button>
+		</Button>
 	);
 }

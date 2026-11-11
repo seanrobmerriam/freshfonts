@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { ScrollPanel } from "../components/ui/ScrollPanel";
 import CopyButton from "../islands/CopyButton.tsx";
 import { loadFont } from "../lib/catalog.functions";
 export const Route = createFileRoute("/fonts/$family")({
@@ -24,7 +25,7 @@ function Page() {
 					No font family exists with the slug <code>{slug}</code>.
 				</p>
 
-				<a href="/" className="btn mt-6">
+				<a href="/" className="ui-button mt-6">
 					Back
 				</a>
 			</main>
@@ -45,7 +46,7 @@ function Page() {
 		<main className="max-w-screen-xl mx-auto px-4 py-12">
 			<div className="flex items-start justify-between gap-6 flex-wrap">
 				<div>
-					<a href="/" className="link link-hover text-sm opacity-70">
+					<a href="/" className="ui-link ui-link-hover text-sm opacity-70">
 						← Back to fonts
 					</a>
 
@@ -58,21 +59,21 @@ function Page() {
 			<section className="mt-10">
 				<h2 className="text-2xl font-bold mb-4">Embed</h2>
 
-				<div className="bg-base-200 rounded-box p-4">
+				<div className="bg-subtle rounded-xl p-4">
 					<div className="flex items-start gap-4">
-						<code className="flex-1 overflow-x-auto whitespace-pre">
-							{embedCode}
-						</code>
+						<ScrollPanel label="Embed code" className="flex-1">
+							<code className="whitespace-pre">{embedCode}</code>
+						</ScrollPanel>
 
 						<CopyButton value={embedCode} label="Copy" />
 					</div>
 				</div>
 
-				<div className="bg-base-200 rounded-box p-4 mt-3">
+				<div className="bg-subtle rounded-xl p-4 mt-3">
 					<div className="flex items-start gap-4">
-						<code className="flex-1 overflow-x-auto whitespace-pre">
-							{cssUsage}
-						</code>
+						<ScrollPanel label="Embed code" className="flex-1">
+							<code className="whitespace-pre">{cssUsage}</code>
+						</ScrollPanel>
 
 						<CopyButton value={cssUsage} label="Copy CSS" />
 					</div>
@@ -91,12 +92,12 @@ function Page() {
 				<div className="mt-6 space-y-4">
 					{weights.map((weight) => (
 						<div
-							className="card bg-base-100 shadow-sm border border-base-300"
+							className="ui-card bg-surface shadow-sm border border-line"
 							key={weight}
 						>
-							<div className="card-body">
+							<div className="ui-card-body">
 								<div className="flex justify-between items-center mb-4">
-									<span className="badge badge-outline">{weight}</span>
+									<span className="ui-badge ">{weight}</span>
 
 									<span className="text-xs opacity-50">{font.family}</span>
 								</div>

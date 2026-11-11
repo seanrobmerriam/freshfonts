@@ -14,7 +14,7 @@ apply to the original project, not the implementation here.
   types, CORS headers, and cache headers when editing endpoints.
 - Keep React preview state scoped with `FontPreviewProvider`; module-level state
   must not leak across SSR requests.
-- Keep Tailwind v4 and daisyUI configuration in `src/styles.css`.
+- Use Ark UI for interactive components. Keep Tailwind v4 and app-owned theme/component styles in `src/styles.css`; do not add daisyUI.
 - Font/icon assets remain ignored by Git except `.gitkeep`. Runtime filesystem
   discovery reads `./assets/fonts` and `./assets/icons` from the project cwd.
 - Do not edit `src/routeTree.gen.ts` by hand. Vite regenerates it.

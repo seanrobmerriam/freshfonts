@@ -7,11 +7,13 @@ export interface MockupProps {
 
 export function BrowserMockup(props: MockupProps) {
 	return (
-		<div className="mockup-browser border border-base-300 bg-base-200 w-full max-w-5xl mx-auto">
-			<div className="mockup-browser-toolbar">
-				<div className="input">{props.url ?? "https://font.preview"}</div>
+		<div className="browser-frame border border-line bg-subtle w-full max-w-5xl mx-auto">
+			<div className="browser-toolbar">
+				<div className="browser-address">
+					{props.url ?? "https://font.preview"}
+				</div>
 			</div>
-			<div className="grid place-content-center border-t border-base-300 h-80">
+			<div className="grid place-content-center border-t border-line h-80">
 				{props.content ?? "Hello!"}
 			</div>
 		</div>

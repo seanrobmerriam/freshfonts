@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { DownloadSvg } from "../components/ui/DownloadSvg";
 import { buildIconUrl } from "../lib/embed";
 
 export const Route = createFileRoute("/icon-preview/$collection/$")({
@@ -17,7 +18,7 @@ function IconPreviewPage() {
 			<Link
 				to="/icons/$collection"
 				params={{ collection }}
-				className="link link-hover text-sm opacity-70"
+				className="ui-link ui-link-hover text-sm opacity-70"
 			>
 				← Back to collection
 			</Link>
@@ -25,7 +26,7 @@ function IconPreviewPage() {
 			<p className="mt-2 text-sm opacity-70 break-all">{file}</p>
 			<section
 				aria-label="Icon preview"
-				className="mt-6 rounded-box border border-base-300 min-h-96 flex items-center justify-center p-8"
+				className="mt-6 rounded-xl border border-line min-h-96 flex items-center justify-center p-8"
 				style={{
 					backgroundColor: "#64748b",
 					backgroundImage:
@@ -35,10 +36,7 @@ function IconPreviewPage() {
 				}}
 			>
 				{failed ? (
-					<p
-						role="alert"
-						className="bg-base-100 text-base-content p-4 rounded-box"
-					>
+					<p role="alert" className="bg-surface text-ink p-4 rounded-xl">
 						This SVG could not be loaded. It may have been moved or removed.
 					</p>
 				) : (
@@ -57,14 +55,15 @@ function IconPreviewPage() {
 				The checkerboard shows transparent areas. The original SVG is unchanged.
 			</p>
 			<div className="flex flex-wrap gap-3 mt-6">
-				<a href={url} download className="btn btn-primary">
-					Download SVG
-				</a>
+				<DownloadSvg
+					url={url}
+					fileName={file.split("/").at(-1) || "icon.svg"}
+				/>
 				<a
 					href={url}
 					target="_blank"
 					rel="noreferrer"
-					className="btn btn-outline"
+					className="ui-button ui-button-outline"
 				>
 					Original SVG
 				</a>

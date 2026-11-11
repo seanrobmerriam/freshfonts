@@ -1,7 +1,7 @@
 # Freshfonts — TanStack Start
 
 Self-hosted WOFF2 fonts and SVG icons, migrated from the Fresh/Deno app to
-TanStack Start, React 19, Vite, and Nitro. Styling uses Tailwind CSS v4 and daisyUI v5.
+TanStack Start, React 19, Vite, and Nitro. Interactive components use Ark UI with Tailwind CSS v4 and app-owned styles.
 
 ## Run
 
@@ -79,7 +79,7 @@ The starter's oRPC endpoints and TanStack Query integration are retained.
 - `src/lib/fonts/`, `src/lib/icons/`: types, filesystem registries, parsing, CSS.
 - `src/components/`, `src/islands/`: React components, clipboard controls, and
   preview context (the migrated islands are ordinary React components).
-- `src/styles.css`: Tailwind/daisyUI and the original application styling.
+- `src/styles.css`: Tailwind, theme tokens, and Ark UI component styling.
 - `tests/`: migrated parser, query, registry, CSS, and embed tests.
 
 The original Fresh source remains in the parent directory for reference; this

@@ -1,6 +1,12 @@
+import { Fieldset } from "@ark-ui/react/fieldset";
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { type FormEvent, useRef, useState } from "react";
+import { Button } from "../components/ui/Button";
+import { IconImage } from "../components/ui/IconImage";
+import { SearchField } from "../components/ui/SearchField";
+import { Spinner } from "../components/ui/Spinner";
+import { VariantSelect } from "../components/ui/VariantSelect";
 import { addIcon, searchIcons } from "../lib/icons/search.functions";
 import {
 	iconPreviewUrl,
@@ -56,7 +62,7 @@ function IconSearchPage() {
 
 	return (
 		<main className="max-w-screen-xl mx-auto px-4 py-12">
-			<Link to="/" className="link link-hover text-sm opacity-70">
+			<Link to="/" className="ui-link ui-link-hover text-sm opacity-70">
 				← Back to Freshfonts
 			</Link>
 			<header className="mt-6 mb-8 flex flex-wrap items-end justify-between gap-4">
@@ -70,43 +76,30 @@ function IconSearchPage() {
 				<Link
 					to="/icons/$collection"
 					params={{ collection: "thesvg" }}
-					className="btn btn-outline btn-sm"
+					className="ui-button ui-button-outline ui-button-sm"
 				>
 					View added icons
 				</Link>
 			</header>
 			<form onSubmit={handleSearch} className="max-w-2xl">
-				<label htmlFor="icon-query" className="block font-semibold mb-2">
-					Icon name or category
-				</label>
-				<div className="flex gap-2">
-					<input
-						id="icon-query"
-						type="search"
-						className="input input-bordered w-full"
-						placeholder="Try GitHub, Vercel, or cloud"
-						value={query}
-						onChange={(event) => setQuery(event.target.value)}
-						maxLength={100}
-						required
-					/>
-					<button
-						type="submit"
-						className="btn btn-primary"
-						disabled={!query.trim()}
-					>
-						{searching && (
-							<span
-								className="loading loading-spinner loading-xs"
-								aria-hidden="true"
-							/>
-						)}
-						Search
-					</button>
-				</div>
+				<Fieldset.Root>
+					<Fieldset.Legend className="sr-only">
+						Search theSVG catalog
+					</Fieldset.Legend>
+					<div className="flex items-end gap-2">
+						<SearchField value={query} onValueChange={setQuery} />
+						<Button
+							type="submit"
+							className="ui-button-primary"
+							disabled={!query.trim()}
+						>
+							{searching && <Spinner label="Searching" />}Search
+						</Button>
+					</div>
+				</Fieldset.Root>
 			</form>
 			{error && (
-				<p role="alert" className="alert alert-error mt-6">
+				<p role="alert" className="ui-notice ui-notice-error mt-6">
 					{error}
 				</p>
 			)}
@@ -118,7 +111,7 @@ function IconSearchPage() {
 						: "Search by brand, name, or category to get started."}
 			</output>
 			{results && results.icons.length === 0 && !searching && (
-				<p className="mt-8 rounded-box border border-base-300 p-8">
+				<p className="mt-8 rounded-xl border border-line p-8">
 					No icons found. Try a different name or a broader category.
 				</p>
 			)}
@@ -137,7 +130,7 @@ function IconSearchPage() {
 					href="https://thesvg.org"
 					target="_blank"
 					rel="noreferrer"
-					className="link"
+					className="ui-link"
 				>
 					theSVG
 				</a>
@@ -156,7 +149,6 @@ function IconCard({ icon }: { icon: SearchIcon }) {
 	const [installed, setInstalled] = useState(icon.installed);
 	const [adding, setAdding] = useState(false);
 	const [error, setError] = useState("");
-	const [previewFailed, setPreviewFailed] = useState(false);
 	const isInstalled = installed.includes(variant);
 
 	async function handleAdd() {
@@ -179,58 +171,38 @@ function IconCard({ icon }: { icon: SearchIcon }) {
 	}
 
 	return (
-		<article className="card bg-base-100 border border-base-300">
-			<div className="card-body p-5">
-				<div className="h-28 rounded-box bg-base-200 flex items-center justify-center">
-					{previewFailed ? (
-						<span className="text-sm opacity-60">Preview unavailable</span>
-					) : (
-						<img
-							src={iconPreviewUrl(icon.slug, variant)}
-							alt={`${icon.title}, ${variant}`}
-							className="max-w-full h-14 object-contain"
-							loading="lazy"
-							onError={() => setPreviewFailed(true)}
-						/>
-					)}
-				</div>
+		<article className="ui-card bg-surface border border-line">
+			<div className="ui-card-body p-5">
+				<IconImage
+					src={iconPreviewUrl(icon.slug, variant)}
+					alt={`${icon.title}, ${variant}`}
+					className="h-28 rounded-xl bg-subtle"
+					imageClassName="max-w-full h-14"
+				/>
 				<h2 className="font-semibold mt-2 break-words">{icon.title}</h2>
 				<p className="text-xs opacity-60">
 					License: {icon.license || "See source"}
 				</p>
-				<label htmlFor={`variant-${icon.slug}`} className="text-sm mt-2">
-					Variant
-				</label>
-				<select
-					id={`variant-${icon.slug}`}
-					className="select select-bordered w-full"
+				<VariantSelect
+					label={`Variant for ${icon.title}`}
+					variants={icon.variants}
 					value={variant}
 					disabled={adding}
-					onChange={(event) => {
-						setVariant(event.target.value);
-						setPreviewFailed(false);
+					onValueChange={(value) => {
+						setVariant(value);
 						setError("");
 					}}
-				>
-					{icon.variants.map((name) => (
-						<option key={name} value={name}>
-							{name.replace(/([a-z])([A-Z])/g, "$1 $2")}
-						</option>
-					))}
-				</select>
-				<button
+				/>
+				<Button
 					type="button"
-					className={`btn mt-2 ${isInstalled ? "btn-outline" : "btn-primary"}`}
+					className={`ui-button mt-2 ${isInstalled ? "ui-button-outline" : "ui-button-primary"}`}
 					onClick={handleAdd}
 					disabled={adding || isInstalled}
 					aria-label={`${isInstalled ? "Added" : "Add"} ${icon.title} ${variant}`}
 				>
 					{adding ? (
 						<>
-							<span
-								className="loading loading-spinner loading-xs"
-								aria-hidden="true"
-							/>
+							<Spinner label="Adding icon" />
 							Adding…
 						</>
 					) : isInstalled ? (
@@ -238,10 +210,10 @@ function IconCard({ icon }: { icon: SearchIcon }) {
 					) : (
 						"Add"
 					)}
-				</button>
+				</Button>
 				{isInstalled && (
 					<a
-						className="link text-sm text-center"
+						className="ui-link text-sm text-center"
 						href={`/icon-preview/thesvg/imported/${icon.slug}/${variantFilename(variant)}.svg`}
 						target="_blank"
 						rel="noreferrer"
@@ -250,7 +222,7 @@ function IconCard({ icon }: { icon: SearchIcon }) {
 					</a>
 				)}
 				{error && (
-					<p role="alert" className="text-error text-sm">
+					<p role="alert" className="text-danger text-sm">
 						{error}
 					</p>
 				)}

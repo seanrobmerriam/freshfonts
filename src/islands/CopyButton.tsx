@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { Clipboard } from "@ark-ui/react/clipboard";
+import { Hint } from "../components/ui/Hint";
 
 interface CopyButtonProps {
 	value: string;
@@ -11,32 +12,26 @@ export default function CopyButton({
 	value,
 	label = "Copy",
 	copiedLabel = "Copied",
-	className = "btn btn-sm",
+	className = "ui-button ui-button-sm",
 }: CopyButtonProps) {
-	const [copied, setCopied] = useState(false);
-	const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-	useEffect(() => () => clearTimeout(timer.current), []);
-
-	async function handleCopy() {
-		if (typeof navigator === "undefined") return;
-
-		try {
-			await navigator.clipboard.writeText(value);
-		} catch {
-			return;
-		}
-
-		setCopied(true);
-		clearTimeout(timer.current);
-
-		timer.current = setTimeout(() => {
-			setCopied(false);
-		}, 1500);
-	}
-
 	return (
-		<button type="button" className={className} onClick={handleCopy}>
-			{copied ? copiedLabel : label}
-		</button>
+		<Clipboard.Root
+			value={value}
+			timeout={1500}
+			translations={{
+				triggerLabel: (copied) => (copied ? copiedLabel : label),
+			}}
+			asChild
+		>
+			<span className="inline-flex">
+				<Hint label={`Copy ${label.toLowerCase()} to clipboard`}>
+					<Clipboard.Trigger className={className}>
+						<Clipboard.Indicator copied={copiedLabel} asChild>
+							<span aria-live="polite">{label}</span>
+						</Clipboard.Indicator>
+					</Clipboard.Trigger>
+				</Hint>
+			</span>
+		</Clipboard.Root>
 	);
 }

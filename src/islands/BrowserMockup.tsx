@@ -42,12 +42,12 @@ export default function BrowserMockup({ defaultFont }: BrowserMockupProps) {
 	const weights = font?.weights.length ? font.weights : [400, 700];
 
 	return (
-		<div className="mockup-browser border border-base-300 bg-base-200 max-w-4xl mx-auto">
-			<div className="mockup-browser-toolbar">
-				<div className="input border border-base-300">freshfont.local</div>
+		<div className="browser-frame border border-line bg-subtle max-w-4xl mx-auto">
+			<div className="browser-toolbar">
+				<div className="browser-address">freshfont.local</div>
 			</div>
 
-			<div className="bg-base-100 px-8 py-10 min-h-[360px]">
+			<div className="bg-surface px-8 py-10 min-h-[360px]">
 				<div className="max-w-3xl mx-auto">
 					<div className="flex items-start justify-between gap-4">
 						<div>
@@ -68,7 +68,10 @@ export default function BrowserMockup({ defaultFont }: BrowserMockupProps) {
 						</div>
 
 						{font && (
-							<a href={`/fonts/${slug}`} className="btn btn-sm btn-ghost">
+							<a
+								href={`/fonts/${slug}`}
+								className="ui-button ui-button-sm ui-button-ghost"
+							>
 								Details
 							</a>
 						)}
@@ -108,7 +111,7 @@ export default function BrowserMockup({ defaultFont }: BrowserMockupProps) {
 								{weights.map((weight) => (
 									<span
 										key={weight}
-										className="badge badge-outline"
+										className="ui-badge "
 										style={{
 											fontFamily: `"${family}", sans-serif`,
 											fontWeight: weight,
