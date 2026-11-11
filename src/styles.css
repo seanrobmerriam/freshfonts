@@ -308,6 +308,12 @@ a {
 	.ui-scroll-viewport::-webkit-scrollbar {
 		display: none;
 	}
+	.ui-scroll-viewport[data-overflow-x] {
+		padding-bottom: 12px;
+	}
+	.ui-scroll-viewport[data-overflow-y] {
+		padding-inline-end: 12px;
+	}
 	.ui-scrollbar {
 		display: flex;
 		padding: 2px;
@@ -321,6 +327,10 @@ a {
 	}
 	.ui-scrollbar[data-orientation="horizontal"] {
 		height: 8px;
+	}
+	.ui-scrollbar[data-orientation="horizontal"]:not([data-overflow-x]),
+	.ui-scrollbar[data-orientation="vertical"]:not([data-overflow-y]) {
+		display: none;
 	}
 	.ui-scroll-thumb {
 		flex: 1;

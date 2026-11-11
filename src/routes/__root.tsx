@@ -6,6 +6,7 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { BackToTop } from "../components/BackToTop";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import { FontPreviewProvider } from "../islands/fontPreviewState";
 import appCss from "../styles.css?url";
@@ -46,9 +47,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			</head>
 			<body>
 				<FontPreviewProvider>{children}</FontPreviewProvider>
+				<BackToTop />
 				<TanStackDevtools
 					config={{
-						position: "bottom-right",
+						position: "bottom-left",
 					}}
 					plugins={[
 						{
