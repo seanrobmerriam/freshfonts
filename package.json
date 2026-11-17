@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@ark-ui/react": "^5.40.0",
+    "@aws-sdk/client-s3": "^3.1170.0",
     "@faker-js/faker": "^10.3.0",
     "@orpc/client": "^1.13.6",
     "@orpc/json-schema": "^1.13.6",
