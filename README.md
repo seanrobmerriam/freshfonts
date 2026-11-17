@@ -84,3 +84,35 @@ The starter's oRPC endpoints and TanStack Query integration are retained.
 
 The original Fresh source remains in the parent directory for reference; this
 project runs independently and does not import from it.
+
+### Optional Neon Object Storage for fonts
+
+By default fonts are read from `assets/fonts`. To use a Neon bucket instead, use
+[Neon Object Storage setup](https://neon.com/docs/storage/get-started) to create a
+private bucket on a supported project and branch, and pull its S3 credentials.
+Set these server environment variables:
+
+```sh
+FONT_STORAGE=neon
+NEON_FONT_BUCKET=fonts
+AWS_ENDPOINT_URL_S3=https://your-branch-storage-endpoint
+AWS_REGION=us-east-2
+AWS_ACCESS_KEY_ID=your-access-key
+AWS_SECRET_ACCESS_KEY=your-secret-key
+```
+
+Use the branch-specific values supplied by Neon; keep credentials secret and
+provide them to the production server as well. Upload fonts to the bucket with
+keys such as `inter/400.woff2` and `inter/700-italic.woff2`, preserving the same
+family and filename layout as the local directory. For example, with the AWS CLI:
+
+```sh
+aws --endpoint-url "$AWS_ENDPOINT_URL_S3" s3 sync assets/fonts/ "s3://$NEON_FONT_BUCKET/" --exclude '.gitkeep'
+```
+
+The server lists objects on each catalog request and reads font bytes from the
+bucket on demand. Existing font URLs, CSS, and response headers stay the same;
+icons continue to use local files. Set `FONT_STORAGE=local` (or omit it) to
+switch back. Storage and permission errors are reported rather than silently
+falling back to a different catalog. As font responses are cached for one year,
+use a new family URL when replacing published font bytes.

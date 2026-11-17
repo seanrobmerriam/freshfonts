@@ -1,7 +1,5 @@
-import { readFile } from "node:fs/promises";
 import { createFileRoute } from "@tanstack/react-router";
-
-const FONT_ROOT = "./assets/fonts";
+import { isMissingFont, readFont } from "../lib/fonts/storage.server.ts";
 
 export const Route = createFileRoute("/fonts/$family_/$file")({
 	server: {
@@ -16,10 +14,8 @@ export const Route = createFileRoute("/fonts/$family_/$file")({
 					});
 				}
 
-				const path = `${FONT_ROOT}/${family}/${file}`;
-
 				try {
-					const data = new Uint8Array(await readFile(path));
+					const data = new Uint8Array(await readFont(family, file));
 
 					return new Response(data, {
 						headers: {
@@ -29,7 +25,7 @@ export const Route = createFileRoute("/fonts/$family_/$file")({
 						},
 					});
 				} catch (error) {
-					if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+					if (isMissingFont(error)) {
 						return new Response("Font not found", {
 							status: 404,
 						});
